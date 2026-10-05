@@ -1,60 +1,60 @@
 #include <Arduino.h>
-#include <U8g2lib.h>
-#include <Wire.h>
-#include <Keyboard.h>
-#include <Adafruit_NeoPixel.h>
-#include "configuration.h"
-//#include <SoftwareSerial.h>
+#include "kem_keyboard.h"
+#include "config.h"
+#include "input.h"
+#include "actions.h"
+#include "leds.h"
 
-//#define TESTPCB
-
-#include "oled_control.h"
-#include "led_control.h"
-#include "kem_control.hpp"
-
-#ifdef TESTPCB
-#include "PCB_test.h"
+#ifdef KEM_DEBUG
+static const char *EV_NAMES[] = {"PRESS", "RELEASE", "TAP", "LONG"};
+static uint32_t loopMaxUs = 0, lastStat = 0;
 #endif
 
-KeyboardExtMaker KEM;
-//================================== KEY CONFIGURATION
-#include "keys_preconfig.h"
-#include "keys_functions_user.h"
-
-#include "keys_config.h"
-
-void setup()
-{
-  oled.begin();
-  Keyboard.begin();
-  led_key.begin();
-  led_base.begin();
-
-  led_key.clear();
-  led_key.show();
-  led_base.clear();
-  led_base.show();
-
-  // Serial.begin(115200);
-
-#ifndef TESTPCB
-  starting();
-  drawLogo(150, 1000);
-  rotateKEY_led_color(150, 0, 55, 70, false);
-  rotateKEY_led_color(150, 0, 55, 70, true);
+void setup() {
+#ifdef KEM_DEBUG
+  Serial.begin(115200);
 #endif
-
-  setup_Keys();
+  config::loadDefaults();
+  kbd.begin();
+  leds::begin();
+  leds::startupAnimation();
+  input::begin();
+  actions::begin();
 }
 
-void loop(void)
-{
-#ifdef TESTPCB
-  // testleds_pcb();
-  testkeys_pcb();
+void loop() {
+#ifdef KEM_DEBUG
+  uint32_t t0 = micros();
 #endif
 
-#ifndef TESTPCB
-  KEM.loop();
+  input::update();
+
+  KeyEvent ev;
+  while (input::poll(ev)) {
+    actions::handle(ev);
+#ifdef KEM_DEBUG
+    if (Serial) {
+      Serial.print("K"); Serial.print(ev.key + 1);
+      Serial.print(" "); Serial.print(EV_NAMES[ev.type]);
+      Serial.print("  t="); Serial.println(millis());
+    }
+#endif
+  }
+
+  actions::update();
+  leds::update();
+
+#ifdef KEM_DEBUG
+  uint32_t dt = micros() - t0;
+  if (dt > loopMaxUs) loopMaxUs = dt;
+  if (millis() - lastStat >= 5000) {
+    lastStat = millis();
+    if (Serial) {
+      Serial.print("[stat] loop max us="); Serial.print(loopMaxUs);
+      Serial.print(" dropIn="); Serial.print(input::dropped());
+      Serial.print(" dropAct="); Serial.println(actions::dropped());
+    }
+    loopMaxUs = 0;
+  }
 #endif
 }

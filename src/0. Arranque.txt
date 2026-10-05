@@ -1,0 +1,41 @@
+0. Arranque
+
+Al enchufarlo, ¿hay barrido de LEDs de izquierda a derecha y vuelta?
+SI
+ ¿La base se queda en morado? SI
+¿Windows lo detecta como teclado y como puerto serie (COM)? TECLADO
+
+1. Las 8 teclas, una por una
+
+Pulsa cada tecla una vez, despacio. Debe salir Kn PRESS, Kn RELEASE y Kn TAP en el monitor.
+Dime cuáles fallan, sobre todo K3, K5, K6 y K8.
+K3, K5 y K6 no escriben nada y se iluminan en azul al pulsarlas.
+
+
+
+2. Acciones (con el Bloc de notas en primer plano)
+
+K7 debe enviar ESC. Para comprobarlo, abre un menú o diálogo y púlsala.
+K1 hace Alt+Tab: cambia de ventana una sola vez.
+K2 es Ctrl+Win+S y K4 Alt+F4. Ojo: K4 cerrará la ventana activa.
+
+3. Rebotes y mantener
+
+Pulsa K1 varias veces con firmeza. ¿Cada pulsación es un único PRESS? Si ves PRESS duplicados seguidos, anota cuántos.
+Mantén K1 un par de segundos: debe salir PRESS, luego LONG a los 0,6 s, y al soltar RELEASE sin TAP. Solo una acción.
+
+4. K7/K8
+
+Pulsa K7 y suéltala deprisa muchas veces: no debe aparecer ningún K8 PRESS.
+Pulsa K8 una vez: el LED pasa a verde y envía flecha arriba y abajo, y repite cada 5 s. Con el Bloc de notas puedes ver el cursor moverse. Púlsala otra vez: LED rojo y se detiene.
+Mantén K8 y pulsa K7 encima: esperado, K8 se suelta y K7 se activa.
+
+5. Rendimiento
+
+Cada 5 s aparece [stat] loop max us=... dropIn=... dropAct=.... Pégame 3 o 4 líneas, una de ellas después de pulsar teclas rápido.
+Espero loop max por debajo de ~1000 y drop a 0.
+
+6. LEDs
+
+¿Los colores se parecen a tu v1 (reposo tenue, brillo al pulsar)? ¿Alguna tecla apagada o con otro color?
+El brillo está en 120 de 255. Dime si prefieres más o menos.

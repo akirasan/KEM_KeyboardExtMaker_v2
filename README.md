@@ -1,4 +1,4 @@
-# KEM Keyboard Extender Maker
+# KEM Keyboard Extender Maker V2
 KEM Keyboard Extender Maker
 
 Las principales características de KE-M son:
@@ -42,4 +42,4 @@ En el fichero **keys_config.h** hay que modificar la función que hay **setup_Ke
 
 # Opensource
 El proyecto es opensource y a parte de este repositorio, lo puedes encontrar también en mi blog:
-https://akirasan.net/kem-keyboard-extender-maker/
+https://akirasan.es/kem-keyboard-extender-maker_v2/
